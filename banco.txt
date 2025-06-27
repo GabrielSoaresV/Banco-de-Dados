@@ -1,0 +1,41 @@
+CREATE DATABASE db_formula1;
+USE db_formula1;
+
+CREATE TABLE paises (
+    codigo INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE equipes (
+    sigla CHAR(3) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cod_pais INT,
+    FOREIGN KEY (cod_pais) REFERENCES paises(codigo)
+);
+
+CREATE TABLE pilotos (
+    numero INT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cod_pais INT,
+    sigla_equipe CHAR(3),
+    FOREIGN KEY (cod_pais) REFERENCES paises(codigo),
+    FOREIGN KEY (sigla_equipe) REFERENCES equipes(sigla)
+);
+
+CREATE TABLE corridas (
+    sigla_go CHAR(5) PRIMARY KEY,
+    nome_go VARCHAR(100) NOT NULL,
+    cod_pais INT,
+    qtd_voltas INT,
+    FOREIGN KEY (cod_pais) REFERENCES paises(codigo)
+);
+
+CREATE TABLE participantes (
+    sigla_go CHAR(5),
+    num_piloto INT,
+    posicao INT,
+    largada INT,
+    PRIMARY KEY (sigla_go, num_piloto),
+    FOREIGN KEY (sigla_go) REFERENCES corridas(sigla_go),
+    FOREIGN KEY (num_piloto) REFERENCES pilotos(numero)
+);
